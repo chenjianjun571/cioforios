@@ -19,6 +19,7 @@ NetCenter::NetCenter():_run_flg(false)
 NetCenter::~NetCenter()
 {
     NetExit();
+    delete rw_local_;
 }
 
 int NetCenter::NetInit(id<CIODelegate> delegate)
@@ -198,7 +199,6 @@ void NetCenter::OnConnectEvent(AsyncSocket* socket)
 
 void NetCenter::OnWriteEvent(AsyncSocket* socket_)
 {
-    NSLog(@"写事件");
     SocketDispatcher* pSocketDispatcher = static_cast<SocketDispatcher*>(socket_);
     struct stSocketObj* sst = socket_objs[pSocketDispatcher->GetDescriptor()];
     if (sst->outpos_ > 0)
