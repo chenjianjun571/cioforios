@@ -65,7 +65,7 @@
         NSLog(@"创建fd失败");
         return;
     }
-    NSLog(@"创建fd:%d.",fd_);
+    NSLog(@"创建fd:%d",fd_);
     if ([pcio ConnectServiceWhitFD:fd_ HostName:@"192.168.1.4" Port:5858] == NO) {
         NSLog(@"连接失败");
         return;
