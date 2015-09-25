@@ -62,7 +62,7 @@
     
     fd_ = [pcio OpenIOChannel];
     if (fd_ == -1) {
-        NSLog(@"创建fd失败");
+        NSLog(@"创建fd失败.");
         return;
     }
     NSLog(@"创建fd:%d.",fd_);
