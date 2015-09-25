@@ -80,6 +80,18 @@
     }
 }
 
+- (IBAction)btnClose:(id)sender
+{
+    if (fd_ > 0)
+    {
+        flg = NO;
+        [pcio CloseIOChannelWithFD:fd_];
+        fd_ = -1;
+    }
+    
+    //[pcio Terminat];
+}
+
 -(int)RecvTCPDataWithFD:(int)fd Data:(NSData*)data
 {
     // 因为底层已经做了线程分离，所以在此函数里面的操作不会影响到底层

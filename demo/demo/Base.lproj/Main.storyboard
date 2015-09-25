@@ -34,6 +34,13 @@
                                     <action selector="btnSendData:" destination="BYZ-38-t0r" eventType="touchUpInside" id="LFg-7B-6OP"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U6c-xd-Zwj">
+                                <rect key="frame" x="282" y="549" width="37" height="30"/>
+                                <state key="normal" title="close"/>
+                                <connections>
+                                    <action selector="btnClose:" destination="BYZ-38-t0r" eventType="touchUpInside" id="fl9-du-Q3N"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
