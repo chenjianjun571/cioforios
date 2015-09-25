@@ -82,24 +82,27 @@
 
 -(int)RecvTCPDataWithFD:(int)fd Data:(NSData*)data
 {
+    // 因为底层已经做了线程分离，所以在此函数里面的操作不会影响到底层
     NSLog(@"%d收到数据包.", fd);
     return 0;
 }
 
 -(int)StatusReportWithFD:(int)fd Status:(enum emNetEvent)status
 {
-    if (ENE_CONNECTED == status) {
-        flg = YES;
-        NSLog(@"连接建立.");
-    }
-    
-    if (ENE_CLOSE == status)
+    // 因为底层已经做了线程分离，所以在此函数里面的操作不会影响到底层
+    switch (status)
     {
-        flg = NO;
-        [pcio CloseIOChannelWithFD:fd_];
-        fd_ = -1;
-        NSLog(@"连接关闭");
-        [self btnConnect:nil];
+        case ENE_CONNECTED:
+            flg = YES;
+            NSLog(@"连接建立.");
+            break;
+        case ENE_CLOSE:
+            flg = NO;
+            [pcio CloseIOChannelWithFD:fd_];
+            fd_ = -1;
+            NSLog(@"连接关闭");
+        default:
+            break;
     }
     
     return 0;
