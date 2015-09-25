@@ -34,7 +34,7 @@
     fd_ = -1;
     flg = NO;
     
-    timer = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(timerFired) userInfo:nil repeats:YES];
+    //timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(timerFired) userInfo:nil repeats:YES];
 }
 
 - (void)didReceiveMemoryWarning
@@ -76,7 +76,10 @@
 {
     if (flg) {
         NSData* data = [Proto GetHeartData];
-        [pcio SendDataWithFD:fd_ Data:data];
+        
+        for (int i =0; i < 15; ++i) {
+            [pcio SendDataWithFD:fd_ Data:data];
+        }
     }
 }
 

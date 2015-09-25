@@ -220,7 +220,6 @@ void NetCenter::OnWriteEvent(AsyncSocket* socket_)
 
 void NetCenter::OnReadEvent(AsyncSocket* socket_)
 {
-    NSLog(@"读事件");
     SocketDispatcher* pSocketDispatcher = static_cast<SocketDispatcher*>(socket_);
     struct stSocketObj* sst = socket_objs[pSocketDispatcher->GetDescriptor()];
     
