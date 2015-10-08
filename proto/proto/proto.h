@@ -10,5 +10,6 @@
 @interface Proto : NSObject
 
 +(NSData*) GetHeartData;
++(NSData*) GetLoginRequest;
 
 @end

@@ -21,4 +21,16 @@
     return [[NSData alloc] initWithBytes:buf.c_str() length:buf.length()];
 }
 
++(NSData*) GetLoginRequest
+{
+    std::string buf;
+    jsbn::protoc::BSSNetProtocol pc;
+    pc.set_type(jsbn::protoc::MSG::Login_Request);
+    pc.mutable_loginrequest()->set_username("ios");
+    pc.mutable_loginrequest()->set_password("qwqwqw");
+    pc.SerializeToString(&buf);
+    
+    return [[NSData alloc] initWithBytes:buf.c_str() length:buf.length()];
+}
+
 @end

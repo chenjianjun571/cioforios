@@ -34,7 +34,7 @@
     fd_ = -1;
     flg = NO;
     
-    //timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(timerFired) userInfo:nil repeats:YES];
+    timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(timerFired) userInfo:nil repeats:YES];
 }
 
 - (void)didReceiveMemoryWarning
@@ -76,10 +76,13 @@
 {
     if (flg) {
         NSData* data = [Proto GetHeartData];
-        
-        for (int i =0; i < 15; ++i) {
+        NSData* lr = [Proto GetLoginRequest];
+        NSLog(@"11.");
+        for (int i =0; i < 2000; ++i) {
             [pcio SendDataWithFD:fd_ Data:data];
+            [pcio SendDataWithFD:fd_ Data:lr];
         }
+        NSLog(@"22.");
     }
 }
 
@@ -98,7 +101,7 @@
 -(int)RecvTCPDataWithFD:(int)fd Data:(NSData*)data
 {
     // 因为底层已经做了线程分离，所以在此函数里面的操作不会影响到底层
-    NSLog(@"%d收到数据包.", fd);
+    //NSLog(@"%d收到数据包.", fd);
     return 0;
 }
 

@@ -13,13 +13,11 @@ NetCenter::NetCenter():_run_flg(false)
 {
     loop_thread_ = std::make_shared<Thread>();
     spcket_service_ = std::make_shared<PhysicalSocketServer>();
-    rw_local_ = RWLock::Create();
 }
 
 NetCenter::~NetCenter()
 {
     NetExit();
-    delete rw_local_;
 }
 
 int NetCenter::NetInit(id<CIODelegate> delegate)
@@ -80,8 +78,7 @@ int NetCenter::CreateFD()
     dispatcher->SignalWriteEvent.connect(this, &NetCenter::OnWriteEvent);
     dispatcher->SignalReadEvent.connect(this, &NetCenter::OnReadEvent);
     
-    WriteLockScoped wl(*rw_local_);
-    
+    CriticalSectionScoped css(&cs_);
     socket_objs[dispatcher->GetDescriptor()] = new stSocketObj(dispatcher);
     spcket_service_->Add(dispatcher);
     spcket_service_->WakeUp();
@@ -96,7 +93,7 @@ void NetCenter::CloseFD(int fd)
         return;
     }
     
-    WriteLockScoped wl(*rw_local_);
+    CriticalSectionScoped css(&cs_);
     std::map<SOCKET, struct stSocketObj*>::iterator it = socket_objs.find(fd);
     if (socket_objs.end() != it)
     {
@@ -122,7 +119,7 @@ bool NetCenter::ConnectServiceWhitFD(int fd , const char* host_name, int port)
     
     SocketAddress addr(host_name, port);
     
-    ReadLockScoped wl(*rw_local_);
+    CriticalSectionScoped css(&cs_);
     std::map<SOCKET, struct stSocketObj*>::iterator it = socket_objs.find(fd);
     if (socket_objs.end() == it)
     {
@@ -144,7 +141,7 @@ bool NetCenter::ConnectServiceWhitFD(int fd , const char* host_name, int port)
 
 int NetCenter::SendDataWithFD(int fd , const void* pv, int cb)
 {
-    ReadLockScoped wl(*rw_local_);
+    CriticalSectionScoped css(&cs_);
     std::map<SOCKET, struct stSocketObj*>::iterator it = socket_objs.find(fd);
     if (socket_objs.end() == it)
     {
@@ -178,7 +175,7 @@ int NetCenter::SendDataWithFD(int fd , const void* pv, int cb)
 
 void NetCenter::Clear()
 {
-    WriteLockScoped wl(*rw_local_);
+    CriticalSectionScoped css(&cs_);
     std::map<SOCKET, struct stSocketObj*>::iterator it = socket_objs.begin();
     while (socket_objs.end() != it)
     {
